@@ -17,6 +17,8 @@ var uuid = require('../').uuid;
 var FAKE_LIGHT = {
   powerOn: false,
   brightness: 100, // percentage
+  hue: 0,
+
   
   setPowerOn: function(on) { 
     console.log("Turning AdyLight %s!", on ? "on" : "off");
@@ -32,7 +34,13 @@ var FAKE_LIGHT = {
   },
   setBrightness: function(brightness) {
     console.log("Setting light brightness to %s", brightness);
+    client.publish('AdyLightBrightness',String(brightness));
     FAKE_LIGHT.brightness = brightness;
+  },
+  setHue: function(hue){
+    console.log("Setting light Hue to %s", hue);
+    client.publish('AdyLightHue',String(hue));
+    FAKE_LIGHT.hue = hue;
   },
   identify: function() {
     console.log("Identify the light!");
@@ -108,3 +116,14 @@ light
     FAKE_LIGHT.setBrightness(value);
     callback();
   })
+
+light
+  .getService(Service.Lightbulb)
+  .addCharacteristic(Characteristic.Hue)
+  .on('get',function(callback){
+   callback(null,FAKE_LIGHT.hue);
+   })
+   .on('set',function(value,callback){
+   FAKE_LIGHT.setHue(value);
+   callback();   
+   })
