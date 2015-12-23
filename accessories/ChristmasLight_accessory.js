@@ -16,17 +16,20 @@ var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
 // here's a fake hardware device that we'll expose to HomeKit
-var FAKE_LIGHT = {
+var CHRISTMAS_LIGHT = {
   powerOn: false,
   
   setPowerOn: function(on) { 
     console.log("Turning the Christmas light %s!", on ? "on" : "off");
     if (on) {
-      	client.publish('ChristmasLight', 'on');
-   	} else {
-	client.publish('ChristmasLight','off');
+      client.publish('ChristmasLight', 'on');
+      CHRISTMAS_LIGHT.powerOn = on;
+   	}
+    else {
+	    client.publish('ChristmasLight','off');
+      CHRISTMAS_LIGHT.powerOn = off;
    };
-    FAKE_LIGHT.powerOn = on;
+
   },
   identify: function() {
     console.log("Identify the light!");
@@ -54,7 +57,7 @@ light
 
 // listen for the "identify" event for this Accessory
 light.on('identify', function(paired, callback) {
-  FAKE_LIGHT.identify();
+  CHRISTMAS_LIGHT.identify();
   callback(); // success
 });
 
@@ -64,7 +67,7 @@ light
   .addService(Service.Lightbulb, "Christmas Light") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
-    FAKE_LIGHT.setPowerOn(value);
+    CHRISTMAS_LIGHT.setPowerOn(value);
     callback(); // Our fake Light is synchronous - this value has been successfully set
   });
 
@@ -81,7 +84,7 @@ light
     
     var err = null; // in case there were any problems
     
-    if (FAKE_LIGHT.powerOn) {
+    if (CHRISTMAS_LIGHT.powerOn) {
       console.log("Are we on? Yes.");
       callback(err, true);
     }

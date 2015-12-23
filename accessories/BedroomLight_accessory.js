@@ -17,7 +17,7 @@ var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
 
 // here's a fake hardware device that we'll expose to HomeKit
-var FAKE_LIGHT = {
+var BEDROOM_LIGHT = {
   powerOn: false,
   brightness: 100, // percentage
   hue: 0,
@@ -27,26 +27,29 @@ var FAKE_LIGHT = {
     console.log("Turning BedroomLight %s!", on ? "on" : "off");
 
     if (on) {
-      	client.publish('BedroomLight', 'on');
-   	} else {
-	client.publish('BedroomLight','off');
+      client.publish('BedroomLight', 'on');
+      BEDROOM_LIGHT.powerOn = on;
+   	} 
+    else {
+	    client.publish('BedroomLight','off');
+      BEDROOM_LIGHT.powerOn = off;   
    };
-    FAKE_LIGHT.powerOn = on;
+
   },
   setBrightness: function(brightness) {
     console.log("Setting light brightness to %s", brightness);
     client.publish('BedroomLightBrightness',String(brightness));
-    FAKE_LIGHT.brightness = brightness;
+    BEDROOM_LIGHT.brightness = brightness;
   },
   setHue: function(hue){
     console.log("Setting light Hue to %s", hue);
     client.publish('BedroomLightHue',String(hue));
-    FAKE_LIGHT.hue = hue;
+    BEDROOM_LIGHT.hue = hue;
   },
   setSaturation: function(saturation){
     console.log("Setting light Saturation to %s", saturation);
     client.publish('BedroomLightSaturation',String(saturation));
-    FAKE_LIGHT.saturation = saturation;
+    BEDROOM_LIGHT.saturation = saturation;
   },
   identify: function() {
     console.log("Identify the light!");
@@ -74,7 +77,7 @@ light
 
 // listen for the "identify" event for this Accessory
 light.on('identify', function(paired, callback) {
-  FAKE_LIGHT.identify();
+  BEDROOM_LIGHT.identify();
   callback(); // success
 });
 
@@ -84,7 +87,7 @@ light
   .addService(Service.Lightbulb, "Bedroom Light") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
-    FAKE_LIGHT.setPowerOn(value);
+    BEDROOM_LIGHT.setPowerOn(value);
     callback(); // Our fake Light is synchronous - this value has been successfully set
   });
 
@@ -101,7 +104,7 @@ light
     
     var err = null; // in case there were any problems
     
-    if (FAKE_LIGHT.powerOn) {
+    if (BEDROOM_LIGHT.powerOn) {
       console.log("Are we on? Yes.");
       callback(err, true);
     }
@@ -116,10 +119,10 @@ light
   .getService(Service.Lightbulb)
   .addCharacteristic(Characteristic.Brightness)
   .on('get', function(callback) {
-    callback(null, FAKE_LIGHT.brightness);
+    callback(null, BEDROOM_LIGHT.brightness);
   })
   .on('set', function(value, callback) {
-    FAKE_LIGHT.setBrightness(value);
+    BEDROOM_LIGHT.setBrightness(value);
     callback();
   })
 
@@ -127,10 +130,10 @@ light
   .getService(Service.Lightbulb)
   .addCharacteristic(Characteristic.Hue)
   .on('get',function(callback){
-   callback(null,FAKE_LIGHT.hue);
+   callback(null,BEDROOM_LIGHT.hue);
    })
    .on('set',function(value,callback){
-   FAKE_LIGHT.setHue(value);
+   BEDROOM_LIGHT.setHue(value);
    callback();   
    })
 
@@ -138,9 +141,9 @@ light
   .getService(Service.Lightbulb)
   .addCharacteristic(Characteristic.Saturation)
   .on('get',function(callback){
-   callback(null,FAKE_LIGHT.saturation);
+   callback(null,BEDROOM_LIGHT.saturation);
    })
    .on('set',function(value,callback){
-   FAKE_LIGHT.setSaturation(value);
+   BEDROOM_LIGHT.setSaturation(value);
    callback();   
    })
