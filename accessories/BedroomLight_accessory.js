@@ -5,7 +5,7 @@ var mqtt = require('mqtt');
 var options = {
   port: 1883,
   host: '192.168.1.155',
-  clientId: 'AdyPi_AdyLight'
+  clientId: 'AdyPi_BedroomLight'
 };
 var client = mqtt.connect(options);
 console.log("Connected");
@@ -24,28 +24,28 @@ var FAKE_LIGHT = {
   saturation: 0,
 
   setPowerOn: function(on) { 
-    console.log("Turning AdyLight %s!", on ? "on" : "off");
+    console.log("Turning BedroomLight %s!", on ? "on" : "off");
 
     if (on) {
-      	client.publish('AdyLight', 'on');
+      	client.publish('BedroomLight', 'on');
    	} else {
-	client.publish('AdyLight','off');
+	client.publish('BedroomLight','off');
    };
     FAKE_LIGHT.powerOn = on;
   },
   setBrightness: function(brightness) {
     console.log("Setting light brightness to %s", brightness);
-    client.publish('AdyLightBrightness',String(brightness));
+    client.publish('BedroomLightBrightness',String(brightness));
     FAKE_LIGHT.brightness = brightness;
   },
   setHue: function(hue){
     console.log("Setting light Hue to %s", hue);
-    client.publish('AdyLightHue',String(hue));
+    client.publish('BedroomLightHue',String(hue));
     FAKE_LIGHT.hue = hue;
   },
   setSaturation: function(saturation){
     console.log("Setting light Saturation to %s", saturation);
-    client.publish('AdyLightSaturation',String(saturation));
+    client.publish('BedroomLightSaturation',String(saturation));
     FAKE_LIGHT.saturation = saturation;
   },
   identify: function() {
@@ -55,8 +55,8 @@ var FAKE_LIGHT = {
 
 // Generate a consistent UUID for our light Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
-// UUID based on an arbitrary "namespace" and the word "Adylight".
-var lightUUID = uuid.generate('hap-nodejs:accessories:Adylight');
+// UUID based on an arbitrary "namespace" and the word "BedroomLight".
+var lightUUID = uuid.generate('hap-nodejs:accessories:BedroomLight');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory('Light', lightUUID);
@@ -81,7 +81,7 @@ light.on('identify', function(paired, callback) {
 // Add the actual Lightbulb Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 light
-  .addService(Service.Lightbulb, "Ady Light") // services exposed to the user should have "names" like "Fake Light" for us
+  .addService(Service.Lightbulb, "Bedroom Light") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
     FAKE_LIGHT.setPowerOn(value);
