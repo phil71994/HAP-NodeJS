@@ -36,3 +36,15 @@ bridge.publish({
   pincode: "031-45-154",
   category: Accessory.Categories.OTHER
 });
+
+
+// MQTT Setup
+console.log("Conecting to MQTT broker...");
+var mqtt = require('mqtt');
+var options = {
+  port: 1883,
+  host: '192.168.1.155',
+  clientId: 'AdyPi_MQTT_Publisher'
+};
+var client = mqtt.connect(options);
+console.log("Conected");

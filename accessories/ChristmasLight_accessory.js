@@ -9,34 +9,15 @@ var uuid = require('../').uuid;
 // here's a fake hardware device that we'll expose to HomeKit
 var FAKE_LIGHT = {
   powerOn: false,
-  brightness: 100, // percentage
-  hue: 0,
-  saturation: 0,
-
+  
   setPowerOn: function(on) { 
-    console.log("Turning AdyLight %s!", on ? "on" : "off");
-
+    console.log("Turning the Christmas light %s!", on ? "on" : "off");
     if (on) {
-      	client.publish('AdyLight', 'on');
+      	client.publish('ChristmasLight', 'on');
    	} else {
-	client.publish('AdyLight','off');
+	client.publish('ChristmasLight','off');
    };
     FAKE_LIGHT.powerOn = on;
-  },
-  setBrightness: function(brightness) {
-    console.log("Setting light brightness to %s", brightness);
-    client.publish('AdyLightBrightness',String(brightness));
-    FAKE_LIGHT.brightness = brightness;
-  },
-  setHue: function(hue){
-    console.log("Setting light Hue to %s", hue);
-    client.publish('AdyLightHue',String(hue));
-    FAKE_LIGHT.hue = hue;
-  },
-  setSaturation: function(saturation){
-    console.log("Setting light Saturation to %s", saturation);
-    client.publish('AdyLightSaturation',String(saturation));
-    FAKE_LIGHT.saturation = saturation;
   },
   identify: function() {
     console.log("Identify the light!");
@@ -45,14 +26,14 @@ var FAKE_LIGHT = {
 
 // Generate a consistent UUID for our light Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
-// UUID based on an arbitrary "namespace" and the word "Adylight".
-var lightUUID = uuid.generate('hap-nodejs:accessories:Adylight');
+// UUID based on an arbitrary "namespace" and the word "Christmaslight".
+var lightUUID = uuid.generate('hap-nodejs:accessories:Christmaslight');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory('Light', lightUUID);
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
-light.username = "1A:2B:3C:4D:5E:FF";
+light.username = "2A:2B:3C:4D:5E:FF";
 light.pincode = "031-45-154";
 
 // set some basic properties (these values are arbitrary and setting them is optional)
@@ -71,7 +52,7 @@ light.on('identify', function(paired, callback) {
 // Add the actual Lightbulb Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 light
-  .addService(Service.Lightbulb, "Ady Light") // services exposed to the user should have "names" like "Fake Light" for us
+  .addService(Service.Lightbulb, "Christmas Light") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
     FAKE_LIGHT.setPowerOn(value);
@@ -101,36 +82,3 @@ light
     }
   });
 
-// also add an "optional" Characteristic for Brightness
-light
-  .getService(Service.Lightbulb)
-  .addCharacteristic(Characteristic.Brightness)
-  .on('get', function(callback) {
-    callback(null, FAKE_LIGHT.brightness);
-  })
-  .on('set', function(value, callback) {
-    FAKE_LIGHT.setBrightness(value);
-    callback();
-  })
-
-light
-  .getService(Service.Lightbulb)
-  .addCharacteristic(Characteristic.Hue)
-  .on('get',function(callback){
-   callback(null,FAKE_LIGHT.hue);
-   })
-   .on('set',function(value,callback){
-   FAKE_LIGHT.setHue(value);
-   callback();   
-   })
-
-light
-  .getService(Service.Lightbulb)
-  .addCharacteristic(Characteristic.Saturation)
-  .on('get',function(callback){
-   callback(null,FAKE_LIGHT.saturation);
-   })
-   .on('set',function(value,callback){
-   FAKE_LIGHT.setSaturation(value);
-   callback();   
-   })
