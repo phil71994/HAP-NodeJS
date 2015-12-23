@@ -1,5 +1,15 @@
 // MQTT Setup
 var mqtt = require('mqtt');
+console.log("Connecting to MQTT broker...");
+var mqtt = require('mqtt');
+var options = {
+  port: 1883,
+  host: '192.168.1.155',
+  clientId: 'AdyPi_AdyLight'
+};
+var client = mqtt.connect(options);
+console.log("Connected");
+
 
 var Accessory = require('../').Accessory;
 var Service = require('../').Service;
