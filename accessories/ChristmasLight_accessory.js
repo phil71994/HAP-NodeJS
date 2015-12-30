@@ -27,7 +27,7 @@ var CHRISTMAS_LIGHT = {
    	}
     else {
 	    client.publish('ChristmasLight','off');
-      CHRISTMAS_LIGHT.powerOn = off;
+      CHRISTMAS_LIGHT.powerOn = false;
    };
 
   },
