@@ -8,7 +8,7 @@ var options = {
   clientId: 'AdyPi_BedroomLight'
 };
 var client = mqtt.connect(options);
-console.log("Connected");
+console.log("BedroomLight Connected to MQTT broker");
 
 
 var Accessory = require('../').Accessory;

@@ -8,7 +8,7 @@ var options = {
   clientId: 'AdyPi_ChristmasLight'
 };
 var client = mqtt.connect(options);
-console.log("Connected");
+console.log("ChristmasLight Connected to MQTT broker");
 
 var Accessory = require('../').Accessory;
 var Service = require('../').Service;
