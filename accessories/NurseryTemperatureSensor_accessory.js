@@ -1,4 +1,4 @@
-var NurseryTemperature = "00";
+var NurseryTemperature = 0;
 
 // MQTT Setup
 var mqtt = require('mqtt');
@@ -13,8 +13,8 @@ var client = mqtt.connect(options);
 console.log("Nursery Temperature Sensor Connected to MQTT broker");
 client.subscribe('NurseryTemperature');
 client.on('message', function(topic, message) {
-//  console.log(parseFloat(message));
-  NurseryTemperature = message;
+  console.log(parseFloat(message));
+  NurseryTemperature = parseFloat(message);
 });
 
 var Accessory = require('../').Accessory;
