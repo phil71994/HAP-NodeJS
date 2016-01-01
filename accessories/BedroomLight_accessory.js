@@ -32,7 +32,7 @@ var BEDROOM_LIGHT = {
    	} 
     else {
 	    client.publish('BedroomLight','off');
-      BEDROOM_LIGHT.powerOn = off;   
+      BEDROOM_LIGHT.powerOn = false;   
    };
 
   },

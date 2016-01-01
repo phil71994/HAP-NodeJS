@@ -51,7 +51,7 @@ sensor.pincode = "031-45-154";
 // Add the actual TemperatureSensor Service.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 sensor
-  .addService(Service.TemperatureSensor, "Nursery Temperature")
+  .addService(Service.TemperatureSensor, "Nursery")
   .getCharacteristic(Characteristic.CurrentTemperature)
   .on('get', function(callback) {
     
