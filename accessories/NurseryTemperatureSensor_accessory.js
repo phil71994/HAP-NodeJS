@@ -1,4 +1,4 @@
-var NurseryTemperature = 0;
+var NurseryTemperature = 0.0;
 
 // MQTT Setup
 var mqtt = require('mqtt');
