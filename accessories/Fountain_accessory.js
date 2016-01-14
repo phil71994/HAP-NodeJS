@@ -65,7 +65,7 @@ var lightUUID = uuid.generate('hap-nodejs:accessories:Fountain');
 var light = exports.accessory = new Accessory('Light', lightUUID);
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
-light.username = "1A:2B:3C:4D:5E:FF";
+light.username = "1A:2B:3C:5D:6E:FF";
 light.pincode = "031-45-154";
 
 // set some basic properties (these values are arbitrary and setting them is optional)
@@ -84,7 +84,7 @@ light.on('identify', function(paired, callback) {
 // Add the actual Lightbulb Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 light
-  .addService(Service.Lightbulb, "Lamp") // services exposed to the user should have "names" like "Fake Light" for us
+  .addService(Service.Lightbulb, "Fiber Lamp") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
     FOUNTAIN_LIGHT.setPowerOn(value);
