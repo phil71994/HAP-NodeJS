@@ -31,7 +31,7 @@ var NURSERY_LIGHT = {
    	} 
     else {
 	    client.publish('NurseryLight','off');
-      NURSERY_LIGHT.powerOn = off;   
+      NURSERY_LIGHT.powerOn = false;   
    };
   },
   setBrightness: function(brightness) {
